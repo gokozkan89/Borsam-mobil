@@ -1,0 +1,25 @@
+<ion-view view-title="Hisse">
+  <ion-content>
+    <h1>Merhaba Hisse</h1>
+    Hisse Kodu Girin : <input type="text" ng-model="vm.hisseKodu"> <button ng-click="vm.searchYahoo()">ARA</button>
+    
+    <div ng-show="vm.loading">Lütfen bekleyiniz....</div>     
+    
+    <div ng-show="!vm.loading">
+        <p> {{vm.count}} adet sonuc bulundu</p>
+        
+        {{vm.hisse.issuer_name}} - {{vm.hisse.price}}
+        
+        <div ng-repeat="item in vm.list">
+             
+        </div>
+        
+    </div>
+    
+    <!--<button ng-click="vm.getHisse()">Getir</button>
+    time : {{vm.time}}
+    <div ng-repeat="item in vm.items">
+        {{item.id}} - {{item.name}} 
+    </div>-->
+  </ion-content>
+</ion-view>
