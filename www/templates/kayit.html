@@ -2,7 +2,7 @@
   <ion-header-bar class="bar-calm">
     <h1 class="title">BORSAM</h1>
   </ion-header-bar>
-  <ion-content class="padding lightgray-bg>
+  <ion-content class="padding lightgray-bg">
     <div class="list" style="text-align: center">
       <img src="./img/logo2.png" class="logo">
     </div>
@@ -10,20 +10,20 @@
       <div class="list card padding">
         <label class="item item-input text-center">
 
-          <input type="text" ng-model="vm.adi"
+          <input type="text" required ng-model="vm.adi"
                  placeholder="Adınızı Giriniz...">
         </label>
         <label class="item item-input text-center">
-          <input type="password" ng-model="vm.soyadi"
+          <input type="text" required ng-model="vm.soyadi"
                  placeholder="Soyadınızı Giriniz...">
         </label>
         <label class="item item-input text-center">
 
-          <input type="text" ng-model="vm.email"
+          <input type="text" required ng-model="vm.email"
                  placeholder="Email Adresinizi Giriniz...">
         </label>
         <label class="item item-input text-center">
-          <input type="password" ng-model="vm.sifre"
+          <input type="password" required ng-model="vm.sifre"
                  placeholder="Şifrenizi Giriniz...">
         </label>
         <button type="submit" class="button button-block button-calm activated">

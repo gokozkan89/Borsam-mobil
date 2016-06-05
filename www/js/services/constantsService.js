@@ -3,9 +3,9 @@
   var module = angular.module("starter.services");
 
   function ConstantsService() {
-    //var apiUrl = "http://borsam.azurewebsites.net";
+    var apiUrl = "http://borsam.azurewebsites.net";
     var yahooUrl = "http://finance.yahoo.com/webservice/v1/symbols/_HISSEKODU_/quote?format=json&view=detail&callback=JSON_CALLBACK";
-    var apiUrl = "http://localhost:3000";
+    //var apiUrl = "http://localhost:3000";
 
     //Gökhan
     //var investingUrl = "http://tr.investing.com/rss/stock_Opinion.rss?callback=JSON_CALLBACK";
