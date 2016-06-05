@@ -1,0 +1,15 @@
+<ion-view view-title="Haberler">
+    <ion-content>
+
+        <ion-list ng-init="vm.haberlerInvesting()">
+            <div class="card" ng-repeat="item in vm.list">
+                <a class="item item-thumbnail-left" href="{{item.link}}">
+                    <img src="./img/inv.png">
+                    <h2>{{item.title}}</h2>
+                    <p>{{item.author}}</p>
+                    <p>{{item.publishedDate}}</p>
+                </a>
+            </div>
+        </ion-list>
+    </ion-content>
+</ion-view>

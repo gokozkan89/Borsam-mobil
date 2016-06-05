@@ -1,0 +1,52 @@
+<ion-view view-title="Al Sat">
+  <ion-content class="lightgray-bg" ng-init="vm.getirHisseBilgileri()">
+    <div class="card">
+      <div class="item item-divider">
+        {{vm.issuer_name}}
+      </div>
+      <div class="item item-text-wrap">
+        <div class="row">
+          <div class="col col-50 text-left">{{vm.symbol}}</div>
+          <div class="col col-50 text-right assertive">%{{vm.chg_percent.toLocaleString()}}</div>
+        </div>
+      </div>
+      <div class="item item-divider">
+        <div class="col col-33 float-left text-left">Son Fiyat</div>
+        <div class="col col-33 float-left text-center">Satılabilir</div>
+        <div class="col col-33 float-left text-right">Nakit</div>
+      </div>
+      <div class="item item-text-wrap">
+        <div class="row">
+          <div class="col col-33 text-left">{{vm.price.toLocaleString()}} TL</div>
+          <div class="col col-33 text-center">{{vm.toplamHisseAdeti}}</div>
+          <div class="col col-33 text-right">{{vm.nakit}} TL</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="item item-input-inset">
+        <div>
+          <label class="item-input-wrapper">
+            <input type="number" placeholder="Adet" ng-model="vm.adet"></input>
+          </label>
+        </div>
+        <div class="row">
+          <div class="col col-50 text-left">TUTAR:</div>
+          <div class="col col-50 text-right">{{ ((vm.adet ? vm.adet : 0) * vm.price).toFixedTr(2) }} TL</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-50">
+        <button class="button button-full button-balanced" ng-click="vm.emirEkle('A')">
+          AL
+        </button>
+      </div>
+      <div class="col col-50">
+        <button class="button button-full button-assertive" ng-click="vm.emirEkle('S')">
+          SAT
+        </button>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

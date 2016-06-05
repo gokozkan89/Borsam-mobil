@@ -1,0 +1,77 @@
+<ion-view view-title="Portföyüm">
+  <ion-content class="lightgray-bg" ng-init="vm.portfoyGetir()">
+    <ion-list>
+      <ion-item class="lightgray-bg">
+        <a class="item item-thumbnail-left" href="">
+          <img src="img/iconNoAvatar.png">
+          <div class="row">
+            <div class="col col-50">
+              <h2>KAR/ZARAR</h2>
+              <div class="{{vm.Kullanici.PortfoyKarZararOraniCss}}">%{{vm.Kullanici.PortfoyKarZararOrani}}</div>
+            </div>
+            <div class="col col-50">
+              <h2>PORTFÖY</h2>
+              <p>{{vm.Kullanici.PortfoyToplamGuncelDeger}} TL</p>
+            </div>
+          </div>
+        </a>
+      </ion-item>
+      <div ng-repeat="item in vm.PortfoyListesi">
+        <ion-item>
+          <div class="col col-20 float-left">{{item.HisseKodu}}</div>
+          <div class="col col-10 float-left">
+            <i class="icon {{item.KarZararIkonCss}}"></i>
+          </div>
+          <div class="col col-60 float-left text-right">
+            {{item.GuncelDeger}} TL
+          </div>
+          <div class="col col-10 float-left">
+            <a href=""><i
+              class="icon {{ item[item.HisseKodu + '_DETAY'] ? 'ion-chevron-up' : 'ion-chevron-down' }} dark"
+              ng-click="item[item.HisseKodu + '_DETAY'] = !item[item.HisseKodu + '_DETAY']"></i></a>
+          </div>
+        </ion-item>
+        <div ng-show="item[item.HisseKodu + '_DETAY']">
+          <ion-item class="item item-divider">
+            <div class="row">
+              <div class="col col-50 text-left">Adet</div>
+              <div class="col col-50 text-right">{{item.ToplamHisseAdeti}}</div>
+            </div>
+          </ion-item>
+          <ion-item class="item item-divider">
+            <div class="row">
+              <div class="col col-50 text-left">Son Fiyat</div>
+              <div class="col col-50 text-right">{{item.SonFiyat}} TL</div>
+            </div>
+          </ion-item>
+          <ion-item class="item item-divider">
+            <div class="row">
+              <div class="col col-50 text-left">Alış Maliyeti</div>
+              <div class="col col-50 text-right">{{item.OrtalamaAlisFiyati}} TL</div>
+            </div>
+          </ion-item>
+          <ion-item class="item item-divider">
+            <div class="row">
+              <div class="col col-50 text-left">Değişim</div>
+              <div class="col col-50 text-right {{item.DegisimCss}}">%{{item.Degisim}}</div>
+            </div>
+          </ion-item>
+          <ion-item class="item item-divider">
+            <div class="row">
+              <div class="col col-50 text-left">Kar/Zarar</div>
+              <div class="col col-50 text-right {{item.KarZararCss}}">{{item.KarZarar}} TL
+              </div>
+            </div>
+          </ion-item>
+          <ion-item class="item item-divider">
+            <div class="row">
+              <div class="col col-50 text-left">Kar/Zarar Oranı</div>
+              <div class="col col-50 text-right {{item.KarZararOraniCss}}">%{{item.KarZararOrani}}
+              </div>
+            </div>
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>
+  </ion-content>
+</ion-view>

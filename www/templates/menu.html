@@ -1,37 +1,60 @@
 <ion-side-menus enable-menu-with-back-views="false">
   <ion-side-menu-content>
-    <ion-nav-bar class="bar-stable">
-      <ion-nav-back-button>
-      </ion-nav-back-button>
-
+    <ion-nav-bar class="bar-calm">
+      <!--<ion-nav-back-button>-->
+      <!--</ion-nav-back-button>-->
       <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
       </ion-nav-buttons>
+      <!--      <ion-nav-buttons side="right">
+              <button class="button button-icon button-clear ion-android-exit">
+              </button>
+            </ion-nav-buttons>-->
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
-
   <ion-side-menu side="left">
-    <ion-header-bar class="bar-stable">
-      <h1 class="title">Left</h1>
+    <ion-header-bar class="bar-calm">
+      <h1 class="title">BORSAM</h1>
     </ion-header-bar>
-    <ion-content>
-      <ion-list>
-        <ion-item menu-close ui-sref="app.hisse">
-          Hisse
+    <ion-content class="dark-bg" style="padding:0;">
+      <ion-list class="dark-bg">
+        <ion-item class="dark-bg">
+          <a class="item item-thumbnail-left">
+            <img src="img/iconNoAvatar.png">
+            <h2>{{Kullanici.Adi + ' ' + Kullanici.Soyadi}}</h2>
+            <p>TUTAR</p>
+            <span>{{Kullanici.PortfoyToplamGuncelDeger}}</span>
+          </a>
         </ion-item>
-        <ion-item menu-close ng-click="login()">
-          Login
+        <ion-item class="item-dark" menu-close href="#/app/portfoyum">
+          <i class="icon ion-pie-graph balanced"></i>
+          Portföyüm
         </ion-item>
-        <ion-item menu-close href="#/app/search">
-          Search
+        <ion-item class="item-dark" menu-close href="#/app/izlealsat">
+          <i class="icon ion-stats-bars calm"></i>
+          İzle-Al-Sat
         </ion-item>
-        <ion-item menu-close href="#/app/browse">
-          Browse
+        <ion-item class="item-dark" menu-close href="#/app/hissetakip">
+          <i class="icon ion-easel balanced"></i>
+          Hisse Takip
         </ion-item>
-        <ion-item menu-close href="#/app/playlists">
-          Playlists
+        <ion-item class="item-dark" menu-close href="#/app/hisseoneri">
+          <i class="icon ion-thumbsup positive"></i>
+          Hisse Öneri
+        </ion-item>
+        <ion-item class="item-dark" menu-close href="#/app/haberler">
+          <i class="icon ion-ios-paper energized"></i>
+          Haberler
+        </ion-item>
+        <ion-item class="item-dark" menu-close href="#/app/ayarlar">
+          <i class="icon ion-wrench royal"></i>
+          Ayarlar
+        </ion-item>
+        <ion-item class="item-dark" menu-close ng-click="cikis()">
+          <i class="icon ion-android-exit assertive"></i>
+          Çıkış
         </ion-item>
       </ion-list>
     </ion-content>

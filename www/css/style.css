@@ -1,1 +1,32 @@
 /* Empty. Add your own CSS if you like */
+.mavi {
+  background-color: #76c4ed !important
+}
+
+.arkaplan {
+  background-color: #f7f8fa !important
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.clear-both {
+  clear: both;
+}
+
+.lightblue-bg {
+  background-color: lightblue;
+}
+
+.lightgray-bg {
+  background-color: lightgray;
+}
+
+.item-toggle {
+  pointer-events: initial !important;
+}

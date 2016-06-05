@@ -1,6 +1,10 @@
-angular.module('starter.controllers', []);
-/*
-  .controller('AppCtrl', function ($scope, $ionicModal, $timeout) {
+/**
+ * Created by Serkan on 25.05.2016.
+ */
+(function () {
+  var module = angular.module('starter.controllers');
+
+  function ApplicationController($rootScope, $scope, $ionicModal, $timeout, $state) {
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
     // To listen for when this page is active (for example, to refresh data),
@@ -38,5 +42,16 @@ angular.module('starter.controllers', []);
         $scope.closeLogin();
       }, 1000);
     };
-  });
-*/
+
+    // Triggered in the login modal to close it
+    $scope.cikis = function () {
+      localStorage.removeItem('kullaniciId');
+      $rootScope.Kullanici = null;
+      $state.go('login');
+    };
+  }
+
+  ApplicationController.$inject = ["$rootScope", "$scope", "$ionicModal", "$timeout", "$state"];
+
+  module.controller("ApplicationController", ApplicationController);
+}());

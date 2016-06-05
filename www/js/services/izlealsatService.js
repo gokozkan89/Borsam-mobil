@@ -1,8 +1,11 @@
+/**
+ * Created by Serkan on 25.05.2016.
+ */
 "use strict";
 (function () {
   var module = angular.module("starter.services");
 
-  function HisseService($http, $q, $timeout, constantsService) {
+  function IzleAlSatService($http, $q, $timeout, constantsService, HisseTakipService) {
     var apiUrl = constantsService.apiUrl + "/borsa/";
 
 
@@ -30,38 +33,50 @@
       return deferred.promise;
     }
 
-    function yahooAll(hisseKodu) {
+    function yahooAll(hisseKodu, kullaniciId) {
       var url = constantsService.yahoo(hisseKodu);
-
 
       var deferred = $q.defer();
 
       function success(result) {
-
         if (result && result.data && result.data.list) {
           var data = result.data.list;
           var adet = data.meta.count;
           var liste = null;
+          var newData = [];
 
           if (angular.isArray(data.resources) && data.resources.length) {
-            var Renk = "balanced";
-            //field = data.resources;
-            var newData = [];
-            for (var i = 0; i < data.resources.length; i++) {
-              if(parseFloat(data.resources[i].resource.fields.chg_percent) < 0)
-                Renk = "assertive";
-              else if(parseFloat(data.resources[i].resource.fields.chg_percent) == 0)
-                Renk = "energized";
-              else
-                Renk = "balanced";
+            HisseTakipService.takipListesiGetir(kullaniciId).then(function (takipResult) {
+              var takipArray = [];
+              for(var j=0;j<takipResult.length; j++)
+              {
+                takipArray.push(takipResult[j].HisseKodu);
+              }
 
-              newData.push({
-                symbol: data.resources[i].resource.fields.symbol.replace('.IS',''),
-                price: data.resources[i].resource.fields.price,
-                yuzdeDegisim: "%" + data.resources[i].resource.fields.chg_percent,
-                renk:Renk
-              });
-            }
+              var Renk = "balanced";
+              //field = data.resources;
+
+              for (var i = 0; i < data.resources.length; i++) {
+                if(parseFloat(data.resources[i].resource.fields.chg_percent) < 0)
+                  Renk = "assertive";
+                else if(parseFloat(data.resources[i].resource.fields.chg_percent) == 0)
+                  Renk = "energized";
+                else
+                  Renk = "balanced";
+
+                var symbol = data.resources[i].resource.fields.symbol.replace('.IS','');
+
+                newData.push({
+                  index: i,
+                  symbol: symbol,
+                  price: data.resources[i].resource.fields.price,
+                  yuzdeDegisim: "%" + data.resources[i].resource.fields.chg_percent,
+                  renk:Renk,
+                  izle: takipArray.indexOf(symbol) == -1 ? false : true
+                });
+              }
+            })
+
             liste = newData;
           }
 
@@ -87,7 +102,6 @@
       var deferred = $q.defer();
 
       function success(result) {
-
         if (result && result.data && result.data.list) {
           var data = result.data.list;
           var count = data.meta.count;
@@ -119,8 +133,7 @@
     };
   }
 
-  HisseService.$inject = ["$http", "$q", "$timeout", "constantsService"];
+  IzleAlSatService.$inject = ["$http", "$q", "$timeout", "constantsService", "HisseTakipService"];
 
-  module.factory("hisseService", HisseService);
-
+  module.factory("IzleAlSatService", IzleAlSatService);
 })();
