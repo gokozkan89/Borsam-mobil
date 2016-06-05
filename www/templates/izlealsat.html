@@ -1,34 +1,33 @@
 <ion-view view-title="İzle-Al-Sat">
-  <ion-content>
-    <ion-refresher
-      pulling-text="Kaydır ve yenile..."
-      on-refresh="vm.getirListe()">
+  <ion-content class="lightgray-bg">
+    <ion-refresher pulling-text="Kaydır ve yenile..." on-refresh="vm.getirListe()">
     </ion-refresher>
-    <ion-list ng-init="vm.getirListe()">
+    <ion-list>
       <div class="list list-inset">
         <label class="item item-input">
           <i class="icon ion-search placeholder-icon"></i>
           <input type="text" ng-model="txt" placeholder="Arama">
         </label>
       </div>
-      <ion-item class="item-divider">
-        <div class="col col-25" style="float:left;">HİSSE</div>
-        <div class="col col-33" style="float:left;"><span>SON FİYAT</span></div>
-        <div class="col col-25" style="float:left;">DEĞİŞİM</div>
-        <div class="col col-10" style="float:left;">İZLE</div>
+      <ion-item class="item-divider ">
+        <div class="col col-25" style="float:left;">Hisse</div>
+        <div class="col col-30" style="float:left;">Son Fiyat</div>
+        <div class="col col-30" style="float:left;">Değişim</div>
+        <div class="col col-15" style="float:left;">İzle</div>
       </ion-item>
-      <ion-item href="#/app/alsat/{{item.symbol}}" collection-repeat="item in vm.liste | filter:{symbol: txt}">
-        <!--<ion-item collection-repeat="item in vm.liste | filter:{symbol: txt}">-->
-        <div class="col col-25" style="float:left;"><strong>{{item.symbol }}</strong></div>
-        <div class="col col-33" style="float:left;"><strong>{{item.price.substring(0,5)}}</strong></div>
-        <div class="col col-25 {{item.renk}}" style="float:left;"><strong>{{item.yuzdeDegisim.substring(0,6)}}</strong>
+      <ion-item class="custom-item" ng-href="#/app/alsat/{{item.symbol}}" collection-repeat="item in vm.liste | filter:{symbol: txt}">
+        <div class="col col-25" style="float:left;">{{item.symbol}}</div>
+        <div class="col col-30" style="float:left;">{{item.price}}</div>
+        <div class="col col-30 {{item.degisimCss}}" style="float:left;">% {{item.degisim}}
         </div>
-        <label class="toggle toggle-balanced">
-          <input type="checkbox" ng-model="item.izle" ng-click="vm.takipListesineEkleCikar(item.index, item.symbol);$event.stopPropagation()">
-          <div class="track">
-            <div class="handle"></div>
-          </div>
-        </label>
+        <div class="col col-15" style="float:left;">
+          <label class="toggle toggle-balanced">
+            <input type="checkbox" ng-model="item.izle" ng-click="vm.takipListesineEkleCikar(item.index, item.symbol);$event.stopPropagation()">
+            <div class="track">
+              <div class="handle"></div>
+            </div>
+          </label>
+        </div>
       </ion-item>
     </ion-list>
   </ion-content>

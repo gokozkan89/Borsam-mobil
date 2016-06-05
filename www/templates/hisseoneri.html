@@ -1,12 +1,23 @@
 <ion-view view-title="Hisse Öneri">
-    <ion-content>
-      <button ng-click="vm.oneriInvesting()">CLICK</button>
+    <ion-content class="lightgray-bg">
         <ion-list>
-            <ion-item>
-                <div class="col col-20" style="float:left;">{{vm.count}}</div>
-                <div class="col col-20" style="float:left;">Kapaniş</div>
-                <div class="col col-25" style="float:left;">Hedef Fiyat</div>
-                <div class="col col-33" style="float:left;">Getiri Potansiyeli</div>
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input type="text" ng-model="txt" placeholder="Arama">
+                </label>
+            </div>
+            <ion-item class="item-divider padding">
+                <div class="col col-20" style="float:left;">Hisse</div>
+                <div class="col col-25" style="float:left;">Son Fiyat</div>
+                <div class="col col-30" style="float:left;">Hedef Fiyat</div>
+                <div class="col col-25" style="float:left;">Potansiyel</div>
+            </ion-item>
+            <ion-item class="padding" ng-repeat="item in vm.HisseOneriListesi | filter:{HisseKodu: txt}">
+                <div class="col col-20" style="float:left;">{{item.HisseKodu}}</div>
+                <div class="col col-25 text-center" style="float:left;">12,23</div>
+                <div class="col col-30 text-center" style="float:left;">{{item.HedefFiyat}}</div>
+                <div class="col col-25 text-center" style="float:left;">% {{item.GetiriPotansiyeli}}</div>
             </ion-item>
         </ion-list>
     </ion-content>

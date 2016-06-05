@@ -4,11 +4,9 @@
 (function () {
   var module = angular.module('starter.controllers');
 
-  function HaberlerController(haberlerService, $ionicLoading, $timeout) {
+  function HaberlerController(haberlerService, $ionicLoading, $timeout, $scope) {
     var vm;
-
-
-
+    
     function haberlerInvesting() {
       vm.loading = true;
 
@@ -37,8 +35,11 @@
         });
       }
 
-
       haberlerService.haberler().then(success).catch(error).finally(finished);
+    }
+
+    function viewEntered(event, data) {
+      vm.haberlerInvesting();
     }
 
     function init() {
@@ -48,13 +49,15 @@
         haberlerInvesting: haberlerInvesting,
       };
 
+      $scope.$on("$ionicView.enter", viewEntered);
+
       return vm;
     }
 
     return init();
   }
 
-  HaberlerController.$inject = ["HaberlerService", "$ionicLoading", "$timeout"];
+  HaberlerController.$inject = ["HaberlerService", "$ionicLoading", "$timeout", "$scope"];
 
   module.controller("HaberlerController", HaberlerController);
 } ());

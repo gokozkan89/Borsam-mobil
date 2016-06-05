@@ -4,10 +4,10 @@
 (function () {
   var module = angular.module('starter.controllers');
 
-  function AlSatController(hisseService, alSatService, $ionicLoading, $timeout, $stateParams, $ionicPopup, $location) {
+  function AlSatController(hisseService, alSatService, $ionicLoading, $timeout, $stateParams, $ionicPopup, $location, $scope) {
     var vm;
 
-    if(isNaN(parseInt(localStorage.getItem('kullaniciId')))) {
+    if (isNaN(parseInt(localStorage.getItem('kullaniciId')))) {
       $location.path('/login');
       return;
     }
@@ -26,10 +26,24 @@
         console.log("The loading indicator is now displayed");
       });
 
+      function generateNewPriceList(oldPrice) {
+        var newPriceList = [];
+        var l = 21;
+        var startPrice = oldPrice - (0.05 * (l - 1) / 2);
+        for (var i = 0; i < l; i++) {          
+          newPriceList.push({
+            value:parseFloat(parseFloat(startPrice + (i * 0.05)).toFixed(2)),
+            text:parseFloat(startPrice + (i * 0.05)).toFixedTr(2)
+          });
+        }
+        return newPriceList;
+      }
+
       function success(result) {
         vm.issuer_name = result.field.issuer_name;
-        vm.price = parseFloat(parseFloat(result.field.price).toFixed(2));
+        vm.newPrice = vm.price = parseFloat(parseFloat(result.field.price).toFixed(2));
         vm.chg_percent = parseFloat(parseFloat(result.field.chg_percent).toFixed(2));
+        vm.newPriceList = generateNewPriceList(result.field.price);
       }
 
       function error() {
@@ -102,8 +116,8 @@
           emirTipi: emirTipi,
           hisseKodu: vm.symbol,
           hisseAdeti: vm.adet,
-          teklifEdilenBirimFiyat: vm.price,
-          kullaniciId: 2
+          teklifEdilenBirimFiyat: vm.newPrice,
+          kullaniciId: localStorage.getItem('kullaniciId')
         }
 
         alSatService.emirEkle(emir).then(success).catch(error).finally(finished);
@@ -115,6 +129,10 @@
       }
     }
 
+    function viewEntered(event, data) {
+      vm.getirHisseBilgileri();
+    }
+
     function init() {
       vm = {
         symbol: $stateParams.symbol,
@@ -124,10 +142,12 @@
       return vm;
     }
 
+    $scope.$on("$ionicView.enter", viewEntered);
+
     return init();
   }
 
-  AlSatController.$inject = ["hisseService", "alSatService", "$ionicLoading", "$timeout", "$stateParams", "$ionicPopup", "$location"];
+  AlSatController.$inject = ["hisseService", "alSatService", "$ionicLoading", "$timeout", "$stateParams", "$ionicPopup", "$location", "$scope"];
 
   module.controller("AlSatController", AlSatController);
-}());
+} ());

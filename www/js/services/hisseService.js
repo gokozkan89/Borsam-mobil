@@ -111,11 +111,33 @@
 
       return deferred.promise;
     }
+    
+    function hisseListesiGetir() {
+      var deferred = $q.defer();
+
+      function success(result) {
+        var hisseListesi = [];
+        if (result && result.data && result.data.result) {
+            hisseListesi = result.data.result;
+        }
+        deferred.resolve({ HisseListesi: result.data.result});
+      }
+
+      function error(result) {
+        deferred.reject(result);
+      }
+
+      var url = apiUrl + "hisseListesiGetir";
+      $http.get(url).then(success).catch(error);
+
+      return deferred.promise;
+    }
 
     return {
       test: test,
       yahoo: yahoo,
-      yahooAll: yahooAll
+      yahooAll: yahooAll,
+      hisseListesiGetir: hisseListesiGetir
     };
   }
 

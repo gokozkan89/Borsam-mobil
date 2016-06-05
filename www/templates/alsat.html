@@ -1,5 +1,5 @@
 <ion-view view-title="Al Sat">
-  <ion-content class="lightgray-bg" ng-init="vm.getirHisseBilgileri()">
+  <ion-content class="lightgray-bg">
     <div class="card">
       <div class="item item-divider">
         {{vm.issuer_name}}
@@ -24,15 +24,21 @@
       </div>
     </div>
     <div class="card">
-      <div class="item item-input-inset">
-        <div>
-          <label class="item-input-wrapper">
-            <input type="number" placeholder="Adet" ng-model="vm.adet"></input>
-          </label>
+      <div class="item item-text-wrap">
+        <div class="row">
+          <div class="col col-50 col-center">
+            <span>TEKLİF: </span>
+            <select class="form-control" ng-model="vm.newPrice">
+              <option value="{{item.value}}" ng-selected="{{item.value == vm.price}}" ng-repeat="item in vm.newPriceList">{{item.text}} TL</option>
+            </select>
+          </div>
+          <div class="col col-50 col-center">
+            <input type="number" class="item-input-wrapper" placeholder="Adet" ng-model="vm.adet"></input>
+          </div>
         </div>
         <div class="row">
           <div class="col col-50 text-left">TUTAR:</div>
-          <div class="col col-50 text-right">{{ ((vm.adet ? vm.adet : 0) * vm.price).toFixedTr(2) }} TL</div>
+          <div class="col col-50 text-right">{{ ((vm.adet ? vm.adet : 0) * vm.newPrice).toFixedTr(2) }} TL</div>
         </div>
       </div>
     </div>

@@ -39,52 +39,39 @@
       var deferred = $q.defer();
 
       function success(result) {
-        if (result && result.data && result.data.list) {
-          var data = result.data.list;
-          var adet = data.meta.count;
-          var liste = null;
-          var newData = [];
+        if (result && result.data && result.data.list && result.data.list.resources && result.data.list.resources.length) {
+          var dataList = result.data.list.resources;
+          var liste = [];
 
-          if (angular.isArray(data.resources) && data.resources.length) {
-            HisseTakipService.takipListesiGetir(kullaniciId).then(function (takipResult) {
-              var takipArray = [];
-              for(var j=0;j<takipResult.length; j++)
-              {
-                takipArray.push(takipResult[j].HisseKodu);
+          HisseTakipService.takipListesiGetir(kullaniciId).then(function (takipResult) {
+            var takipArray = [];
+            
+            if(takipResult && takipResult.HisseTakipListesi){
+              for (var i = 0; i < takipResult.HisseTakipListesi.length; i++) {
+                takipArray.push(takipResult.HisseTakipListesi[i].HisseKodu);
               }
+            }
 
-              var Renk = "balanced";
-              //field = data.resources;
-
-              for (var i = 0; i < data.resources.length; i++) {
-                if(parseFloat(data.resources[i].resource.fields.chg_percent) < 0)
-                  Renk = "assertive";
-                else if(parseFloat(data.resources[i].resource.fields.chg_percent) == 0)
-                  Renk = "energized";
-                else
-                  Renk = "balanced";
-
-                var symbol = data.resources[i].resource.fields.symbol.replace('.IS','');
-
-                newData.push({
-                  index: i,
-                  symbol: symbol,
-                  price: data.resources[i].resource.fields.price,
-                  yuzdeDegisim: "%" + data.resources[i].resource.fields.chg_percent,
-                  renk:Renk,
-                  izle: takipArray.indexOf(symbol) == -1 ? false : true
-                });
-              }
-            })
-
-            liste = newData;
-          }
-
-          deferred.resolve({adet: adet, liste: liste});
+            for (var j = 0; j < dataList.length; j++) {
+              var yahooData = dataList[j].resource.fields;
+              var symbol = yahooData.symbol.replace('.IS','');
+              var sonFiyat = parseFloat(yahooData.price);
+              var degisim = parseFloat(yahooData.chg_percent);
+              
+              liste.push({
+                index: j,
+                symbol: symbol,
+                price: sonFiyat.toFixedTr(2),
+                degisim: degisim.toFixedTr(2),
+                degisimCss: degisim < 0 ? "assertive" : (degisim > 0 ? "balanced" : "energized"),
+                izle: takipArray.indexOf(symbol) == -1 ? false : true
+              });              
+            }
+            deferred.resolve({ liste: liste });
+          })
         } else {
           deferred.resolve(null);
         }
-
       }
 
       function error(result) {
@@ -111,7 +98,7 @@
             field = data.resources[0].resource.fields;
           }
 
-          deferred.resolve({count: count, field: field});
+          deferred.resolve({ count: count, field: field });
         } else {
           deferred.resolve(null);
         }

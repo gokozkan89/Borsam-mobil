@@ -4,7 +4,7 @@
 (function () {
   var module = angular.module('starter.controllers');
 
-  function LoginController(loginService, PortfoyumService, $ionicLoading, $ionicPopup, $state, $rootScope) {
+  function LoginController(loginService, PortfoyumService, $ionicLoading, $ionicPopup, $state, $rootScope, $scope) {
     var vm;
 
     function register() {
@@ -106,18 +106,33 @@
       loginService.login(user).then(success).catch(error).finally(finished);
     }
 
+    function loginKontrol() {
+      if (!isNaN(parseInt(localStorage.getItem('kullaniciId')))) {
+        $state.go('app.portfoyum');
+      }
+    }
+
+    function viewEntered(event, data) {
+      vm.loginKontrol();
+    }
+
+
     function init() {
       vm = {
         register: register,
-        login: login
+        login: login,
+        loginKontrol: loginKontrol
       };
+
+      $scope.$on("$ionicView.enter", viewEntered);
+
       return vm;
     }
 
     return init();
   }
 
-  LoginController.$inject = ["loginService", "PortfoyumService", "$ionicLoading", "$ionicPopup", "$state", "$rootScope"];
+  LoginController.$inject = ["loginService", "PortfoyumService", "$ionicLoading", "$ionicPopup", "$state", "$rootScope", "$scope"];
 
   module.controller("LoginController", LoginController);
-}());
+} ());

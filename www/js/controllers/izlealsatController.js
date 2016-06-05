@@ -183,6 +183,10 @@
       HisseTakipService.takipListesindenCikar(hisseKodu, kullaniciId).then(success).catch(error).finally(finished);
     }
 
+    function viewEntered(event, data){
+      vm.getirListe();
+    }
+
     function init() {
       vm = {
         name: "Yasin",
@@ -200,6 +204,8 @@
         takipListesindenCikar: takipListesindenCikar,
         takipListesineEkleCikar: takipListesineEkleCikar
       };
+
+      $scope.$on("$ionicView.enter", viewEntered);
 
       return vm;
     }

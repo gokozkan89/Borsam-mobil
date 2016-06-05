@@ -44,7 +44,7 @@
     function takipListesiGetir() {
       vm.loading = true;
 
-      var kullaniciId = 2;
+      var kullaniciId = localStorage.getItem('kullaniciId');
 
       $ionicLoading.show({
         template: 'Loading...'
@@ -54,12 +54,17 @@
 
       function success(result) {
         var yeniListe = [];
-        for (var i = 0; i < result.length; i++) {
-          yeniListe.push({
-            Index: i,
-            HisseKodu: result[i].HisseKodu,
-            Izle: result[i].Izle == 1 ? true : false
-          });
+        if (result && result.HisseTakipListesi) {
+          for (var i = 0; i < result.HisseTakipListesi.length; i++) {
+            yeniListe.push({
+              Index: i,
+              HisseKodu: result.HisseTakipListesi[i].HisseKodu,
+              SonFiyat: result.HisseTakipListesi[i].SonFiyat,
+              Degisim: result.HisseTakipListesi[i].Degisim,
+              DegisimCss: result.HisseTakipListesi[i].DegisimCss,
+              Izle: result.HisseTakipListesi[i].Izle == 1 ? true : false
+            });
+          }
         }
         vm.liste = yeniListe;
       }
@@ -84,7 +89,7 @@
     function takipListesindenCikar(hisseKodu) {
       vm.loading = true;
 
-      var kullaniciId = 2;
+      var kullaniciId = localStorage.getItem('kullaniciId');
 
       $ionicLoading.show({
         template: 'Loading...'
@@ -111,6 +116,10 @@
       HisseTakipService.takipListesindenCikar(hisseKodu, kullaniciId).then(success).catch(error).finally(finished);
     }
 
+    function viewEntered(event, data){
+      vm.takipListesiGetir();
+    }
+
     function init() {
       vm = {
         takipListesineEkleCikar: takipListesineEkleCikar,
@@ -120,10 +129,12 @@
       return vm;
     }
 
+    $scope.$on("$ionicView.enter", viewEntered);
+
     return init();
   }
 
   HisseTakipController.$inject = ["HisseTakipService", "$ionicLoading", "$timeout", "$scope"];
 
   module.controller("HisseTakipController", HisseTakipController);
-}());
+} ());
