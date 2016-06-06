@@ -2,7 +2,7 @@
 (function () {
   var module = angular.module("starter.services");
 
-  function PortfoyumService($http, $q, $timeout, constantsService, IzleAlSatService) {
+  function PortfoyumService($http, $q, $timeout, constantsService, hisseService) {
     var apiUrl = constantsService.apiUrl + "/borsa/";
 
     function portfoyGetir(kullaniciId) {
@@ -11,24 +11,28 @@
       function success(result) {
         var portfoyListesi = [];
         var kullanici = {};
-
         if (result && result.data && result.data.result) {
           var resultData = result.data.result;
-
           if (angular.isArray(resultData.KullaniciListesi) && resultData.KullaniciListesi.length) {
             kullanici = resultData.KullaniciListesi[0];
           }
 
-          var portfoyToplamGuncelDeger = kullanici.Nakit;
-
           if (angular.isArray(resultData.PortfoyListesi) && resultData.PortfoyListesi.length) {
             var portfoyDataListesi = resultData.PortfoyListesi;
-            for (var i = 0; i < portfoyDataListesi.length; i++) {
-              (function (portfoyData) {
-                IzleAlSatService.yahoo(portfoyData.HisseKodu + ".IS").then(function (yahooResult) {
-                  if (yahooResult != null && yahooResult.field) {
-                    var yahooData = yahooResult.field;
+            var yahooPromiseList = [];
 
+            for (var i = 0, l = portfoyDataListesi.length; i < l; i++) {
+              yahooPromiseList.push(hisseService.yahoo(portfoyDataListesi[i].HisseKodu + ".IS"));
+            }
+
+            $q.all(yahooPromiseList).then(function (yahooAllResult) {
+              if (yahooAllResult != null) {
+                var portfoyToplamGuncelDeger = kullanici.Nakit;
+                for (var j = 0, k = yahooAllResult.length; j < k; j++) {
+                  var portfoyData = portfoyDataListesi[j];
+                  var yahooData = yahooAllResult[j].field;
+
+                  if (portfoyData && yahooData) {
                     var hisseKodu = portfoyData.HisseKodu;
                     var toplamHisseAdeti = parseFloat(portfoyData.ToplamHisseAdeti);
                     var toplamAlisFiyati = parseFloat(portfoyData.ToplamAlisFiyati);
@@ -57,16 +61,20 @@
 
                     portfoyToplamGuncelDeger += guncelDeger;
                   }
-                })
-              })(portfoyDataListesi[i]);
-            }
+                }
+                var portfoyKarZararOrani = parseFloat((portfoyToplamGuncelDeger - kullanici.NakitBaslangic) / kullanici.NakitBaslangic * 100);
+                kullanici.PortfoyKarZararOrani = portfoyKarZararOrani.toFixedTr(2);
+                kullanici.PortfoyKarZararOraniCss = portfoyKarZararOrani < 0 ? "assertive" : (portfoyKarZararOrani > 0 ? "balanced" : "energized");
+                kullanici.PortfoyToplamGuncelDeger = portfoyToplamGuncelDeger.toFixedTr(2);
+              }
+              deferred.resolve({Kullanici: kullanici, PortfoyListesi: portfoyListesi});
+            });
+          } else {
+            deferred.resolve({Kullanici: kullanici, PortfoyListesi: portfoyListesi});
           }
-          var portfoyKarZararOrani = parseFloat((portfoyToplamGuncelDeger - kullanici.NakitBaslangic) / kullanici.NakitBaslangic * 100);
-          kullanici.PortfoyKarZararOrani = portfoyKarZararOrani.toFixedTr(2);
-          kullanici.PortfoyKarZararOraniCss = portfoyKarZararOrani < 0 ? "assertive" : (portfoyKarZararOrani > 0 ? "balanced" : "energized");
-          kullanici.PortfoyToplamGuncelDeger = portfoyToplamGuncelDeger.toFixedTr(2);
+        } else {
+          deferred.resolve({Kullanici: kullanici, PortfoyListesi: portfoyListesi});
         }
-        deferred.resolve({Kullanici: kullanici, PortfoyListesi: portfoyListesi});
       }
 
       function error(result) {
@@ -84,7 +92,7 @@
     };
   }
 
-  PortfoyumService.$inject = ["$http", "$q", "$timeout", "constantsService", "IzleAlSatService"];
+  PortfoyumService.$inject = ["$http", "$q", "$timeout", "constantsService", "hisseService"];
 
   module.factory("PortfoyumService", PortfoyumService);
 
