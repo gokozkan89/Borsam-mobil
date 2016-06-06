@@ -6,7 +6,7 @@
 
   function HaberlerController(haberlerService, $ionicLoading, $timeout, $scope) {
     var vm;
-    
+
     function haberlerInvesting() {
       vm.loading = true;
 
@@ -33,6 +33,8 @@
         $ionicLoading.hide().then(function () {
           console.log("The loading indicator is now hidden");
         });
+
+        $scope.$broadcast('scroll.refreshComplete');
       }
 
       haberlerService.haberler().then(success).catch(error).finally(finished);

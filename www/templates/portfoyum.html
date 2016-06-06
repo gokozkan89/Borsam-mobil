@@ -1,5 +1,7 @@
 <ion-view view-title="Portföyüm">
   <ion-content class="lightgray-bg">
+    <ion-refresher pulling-text="Kaydır ve yenile..." on-refresh="vm.portfoyGetir()">
+    </ion-refresher>
     <ion-list>
       <ion-item class="lightgray-bg">
         <a class="item item-thumbnail-left" href="">

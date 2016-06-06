@@ -1,24 +1,27 @@
 <ion-view view-title="Hisse Öneri">
-    <ion-content class="lightgray-bg">
-        <ion-list>
-            <div class="list list-inset">
-                <label class="item item-input">
-                    <i class="icon ion-search placeholder-icon"></i>
-                    <input type="text" ng-model="txt" placeholder="Arama">
-                </label>
-            </div>
-            <ion-item class="item-divider padding">
-                <div class="col col-20" style="float:left;">Hisse</div>
-                <div class="col col-25" style="float:left;">Son Fiyat</div>
-                <div class="col col-30" style="float:left;">Hedef Fiyat</div>
-                <div class="col col-25" style="float:left;">Potansiyel</div>
-            </ion-item>
-            <ion-item class="padding" ng-repeat="item in vm.HisseOneriListesi | filter:{HisseKodu: txt}">
-                <div class="col col-20" style="float:left;">{{item.HisseKodu}}</div>
-                <div class="col col-25 text-center" style="float:left;">12,23</div>
-                <div class="col col-30 text-center" style="float:left;">{{item.HedefFiyat}}</div>
-                <div class="col col-25 text-center" style="float:left;">% {{item.GetiriPotansiyeli}}</div>
-            </ion-item>
-        </ion-list>
-    </ion-content>
+  <ion-content class="lightgray-bg">
+    <ion-refresher pulling-text="Kaydır ve yenile..." on-refresh="vm.hisseOneriGetir()">
+    </ion-refresher>
+    <ion-list>
+      <div class="list list-inset">
+        <label class="item item-input">
+          <i class="icon ion-search placeholder-icon"></i>
+          <input type="text" ng-model="txt" placeholder="Arama">
+        </label>
+      </div>
+      <ion-item class="item-divider padding">
+        <div class="col col-20" style="float:left;">Hisse</div>
+        <div class="col col-25" style="float:left;">Son Fiyat</div>
+        <div class="col col-30" style="float:left;">Hedef Fiyat</div>
+        <div class="col col-25" style="float:left;">Potansiyel</div>
+      </ion-item>
+      <ion-item class="padding" ng-repeat="item in vm.HisseOneriListesi | filter:{HisseKodu: txt} | orderBy:'-GetiriPotansiyeli'">
+        <div class="col col-20" style="float:left;">{{item.HisseKodu}}</div>
+        <div class="col col-25 text-center" style="float:left;">{{item.SonFiyat}}</div>
+        <div class="col col-30 text-center" style="float:left;">{{item.HedefFiyat}}</div>
+        <div class="col col-25 text-center {{item.GetiriPotansiyeliCss}}" style="float:left;">% {{item.GetiriPotansiyeli}}
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
 </ion-view>
